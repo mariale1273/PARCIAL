@@ -24,7 +24,7 @@ public class BasedeDatos {
     private static String password = "11k1WiZg5ekiFQYHx9Bog6W7cTArSZea";
     private static String url = "jdbc:postgresql://dpg-cfpuu1qrrk0fd9ounopg-a.oregon-postgres.render.com:5432/" + bd;
     private static Connection conexion = null;
-
+    
     public static boolean hayConexion() {
         return (conexion != null);
     }  

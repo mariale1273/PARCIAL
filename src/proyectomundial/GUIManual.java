@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.List;
 import java.util.Scanner;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -23,7 +24,9 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import proyectomundial.DAO.SeleccionDAO;
+import proyectomundial.DAO.UserDao;
 import proyectomundial.model.Seleccion;
+import proyectomundial.model.User;
 
 public class GUIManual extends JFrame {
 
@@ -59,6 +62,10 @@ public class GUIManual extends JFrame {
     
     private JPanel jPanelMenuDashboardRes;
     private JLabel btnDashboardRes;
+    
+    private JPanel jPanelMenuUser;
+    private JLabel btnUser;
+        
         
     // Elementos de panel de contenido
     private JPanel jPanelRight;
@@ -112,6 +119,9 @@ public class GUIManual extends JFrame {
         jPanelMenuDashboardRes = new JPanel();
         btnDashboardRes = new JLabel();
         
+        jPanelMenuUser = new JPanel();
+        btnUser = new JLabel();
+    
         // Pinta el logo de la aplicación
         pintarLogo();
         
@@ -129,6 +139,9 @@ public class GUIManual extends JFrame {
         
         // Pinta la opción de Menú del dahboard de resultados
         pintarMenuDashboardRes();
+        
+        //Pintar la opción de Menú de Usuario
+        pintarMenuUser();
         
         // Pinta y ajuste diseño del contenedor del panel izquierdo
         pintarPanelIzquierdo();
@@ -208,6 +221,44 @@ public class GUIManual extends JFrame {
         jPanelMain.add(homePanel, BorderLayout.CENTER);
         jPanelMain.repaint();
         jPanelMain.revalidate();
+    }
+    
+    private void pintarMenuUser(){
+        btnUser.setIcon(new ImageIcon(getClass().getResource("/resources/icons/home.png"))); // NOI18N
+        btnUser.setText("Sesión");
+        btnUser.setForeground(new java.awt.Color(255, 255, 255));
+        
+        JLabel vacioUser = new JLabel();
+        jPanelMenuUser.setBackground(new java.awt.Color(17, 41, 63));
+        jPanelMenuUser.setPreferredSize((new java.awt.Dimension(220, 35)));
+        jPanelMenuUser.setLayout(new BorderLayout(15, 0));
+        jPanelMenuUser.add(vacioUser, BorderLayout.WEST);
+        jPanelMenuUser.add(btnUser, BorderLayout.CENTER);
+        jPanelMenu.add(jPanelMenuUser);
+
+        btnUser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                System.out.println("Sesión");
+                accionUser();
+            }
+        });
+    }
+    
+    private void accionUser(){
+        String user, contra;
+        UserDao userDao = new UserDao();
+        List<User> users = userDao.getUsers();
+        user = JOptionPane.showInputDialog("Digita tu usuario : ");
+        contra = JOptionPane.showInputDialog("Digita tu contraseña : ");
+        for (User user1 : users) {
+            if (user1.getUsername().equalsIgnoreCase(user) && user1.getPassword().equalsIgnoreCase(contra)) {
+                haySesion = true;
+                JOptionPane.showInputDialog(null, "Inicio de sesión exitoso, bienvenido");
+            }
+        }
+        if (haySesion == false) {
+            JOptionPane.showInputDialog(null, "Usuario y contraseña no encontrados");
+        }
     }
     
     /**
